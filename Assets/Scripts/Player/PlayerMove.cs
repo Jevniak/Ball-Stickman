@@ -13,6 +13,7 @@ namespace Player
 
         private void Start()
         {
+            rb = GetComponent<Rigidbody>();
             normalSpeed = speed;
             thisTransform = transform;
             if (_dynamicJoystick == null)
@@ -24,7 +25,7 @@ namespace Player
             if (UIManager.Instance.gameStarted)
             {
                 Vector3 movement = new Vector3(_dynamicJoystick.Horizontal, 0, 1f);
-                // Move(movement, speed);
+                Move(movement, speed);
             }
         }
 
@@ -51,9 +52,10 @@ namespace Player
             speed = normalSpeed;
         }
 
-        private void OnTriggerEnter(Collider other)
+        private void OnCollisionEnter(Collision other)
         {
-            print(other.gameObject.name);
+            if (other.gameObject.CompareTag("Floor"))
+                rb.AddForce(Vector3.up * 8, ForceMode.Impulse);
         }
     }
 }
